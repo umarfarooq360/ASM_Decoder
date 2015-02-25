@@ -1,0 +1,27 @@
+Author: Omar Farooq
+Design document-CS301 Project 1
+
+-------------------OVERALL DESIGN-----------------
+The project uses a lot of code from lab 5. Specifically, OpcodeTable, Instruction, RegisterTable and ASM classes are taked from lab 5. The code in ASMDecoder.cpp reverses the process implememnted in lab 5 to get MIPS assembly code from binary instructions.
+
+-------------------ALGORITHM STEPS----------------
+-Read a file specified by the user and get 32 bit instruction in each line. The instructions are stored in a vector.
+-For each 32 bit binary instructions break it into their components based on their function field and their opcode field.
+-Based on the type of the binary instruction we check for different positions like RS, RT ,RD, Immediate field. The OpcodeTable class has this information for each instructionn that our program is able to decode. This way we know what bits of the string are what fields.
+-Each instruction is then parsed to get fields and those are converted into a decimal value for the registers and immediate fields. The RegisterTable class  is used to get the appropriate registers associated with that decimal number. The immediate fields are converted into correct decimal values and in case of a jump or branch they are converted to a hexadecimal string.
+-After the binary instruction is converted to decimal, we print out the decoded instruction.
+
+-----------HOW TO ADD MORE INSTRUCTIONS----------
+More mips encodings can be added to this implementation by adding their information to the OpcodeTable.cpp class file. For a new instruction we would have to specify what fields are at what positions, what the opcode and funct field is. Since the template already has smoe exapmles of R , I and J type instructions we will not have to change that code.
+
+-----------------OVERVIEW OF CLASSES---------------
+ASM.cpp: This class reads in a file from the user and build a vector that the ASMDecoder class will push_back instruction objects into. ASM.cpp should then print out the contents of that vector to the user at the stdout.
+
+ASMDecoder.cpp: This class takes each line of binary instructions passed to it by the ASM class convert those strings of binary encodings into its smaller register values,opcode,function,shammt and immediate fields based on the type of instruction. 
+
+Instruction.cpp: The instruction.cpp class is the class that is used to represent each correct mips instruction. The instruction objects have their data fields set in the ASMDecoder class and once those data fields are set the decode method in the ASMDecoder class can take that instruction and print out its values correctly based on the information stored in the instruction object.
+
+OpcodeTable.cpp: This class is the library of all the different mips instructions that the implementation has access to. It also contains the accessor methods to get at each data field in the Opcode.cpp library. The ASMDecoder class calls on the Opcode.cpp class to determine the type and other information about each binary string encoding.
+
+RegisterTable.cpp: The RegisterTable.cpp is a collection of all of the register names that could be access based on a 5bit binary value converted to a decimal integer. The myParaser uses the library stored in register table to get the correct string to represent the register assigned by each 5bit binary number representing the register.
+My implementation is a well oiled mechanism which reads in a file which contains a binary encoding on each line and uses each class file in the aforementioned fashion to print out to the user the correct Mips assembly code. 
